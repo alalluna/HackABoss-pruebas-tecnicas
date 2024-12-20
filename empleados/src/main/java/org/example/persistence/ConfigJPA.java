@@ -6,7 +6,7 @@ import jakarta.persistence.Persistence;
 
 public class ConfigJPA {
 
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("movies");
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("empleados");
     public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
