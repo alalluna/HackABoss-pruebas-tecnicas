@@ -90,6 +90,46 @@ public class EmpleadoJPA {
         }
     }
 
+    //leer la lista de Empleados
+    public List<Empleado> read() {
+        EntityManager em = ConfigJPA.getEntityManager();
+        try {
+            //se usa query para la consulta sql y se devuelve la lista de empleados
+            TypedQuery<Empleado> query = em.createQuery("SELECT p FROM empleados p", Empleado.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
+    //editar un registro, es similar a crear pero usando merge
+    public void update(Empleado editarEmpleado) {
+        if(validarEmpleado(editarEmpleado)){
+            EntityManager em = ConfigJPA.getEntityManager();
+            try{
+                em.getTransaction().begin();
+                em.merge(editarEmpleado); //update
+                em.getTransaction().commit();
 
+            }finally {
+                em.close();
+            }
+        } else {
+            //si no se introducen valores correctos
+            System.err.println("Estos datos no son correctos para crear un empleado");
+        }
+    }
+
+    //buscar por cargo
+    public List<Empleado> searchByCargo(String cargo) {
+        EntityManager em = ConfigJPA.getEntityManager();
+        //En este caso es similar a read pero se debe hacer la consulta por el string cargo
+        try {
+            String queryString = "SELECT p FROM empleados p WHERE p.cargo = '" + cargo + "'";
+            TypedQuery<Empleado> query = em.createQuery(queryString, Empleado.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
