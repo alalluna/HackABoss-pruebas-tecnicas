@@ -10,4 +10,12 @@ public class EmpleadoController {
     public void create(Empleado nuevoEmpleado){
         empleadoJPA.create(nuevoEmpleado);
     }
+
+    public Empleado find(Integer idSearch){
+        return empleadoJPA.find(idSearch);
+    }
+
+    public void delete(Integer idDelete){
+        empleadoJPA.delete(idDelete);
+    }
 }

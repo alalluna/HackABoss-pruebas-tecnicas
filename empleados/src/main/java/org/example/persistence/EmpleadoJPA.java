@@ -1,17 +1,18 @@
 package org.example.persistence;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.example.entities.Empleado;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
-
+//aquí desarrollo los metodos
 public class EmpleadoJPA {
+
     //para validar los datos del empleado es bueno confirmar que no se envian datos incorrectos
-    // para los string valido que los datos en vacio, blanco o null
-    //para el salario que no sea inferior a 0 euros
-    //la fecha de inicio que no sea null
+    // para los string valido que los datos no esten vacios, blanco o null
     private boolean validarEmpleado(Empleado nuevoEmpleado) {
         if (nuevoEmpleado.getNombre() == null || nuevoEmpleado.getNombre().isBlank() || nuevoEmpleado.getNombre().isEmpty()) {
             System.err.println("Escribe un nombre valido, no se aceptan en blanco o null");
@@ -21,21 +22,27 @@ public class EmpleadoJPA {
             System.err.println("Escribe uno o dos apellidos, no se aceptan en blanco o null");
             return false;
         }
-        if (nuevoEmpleado.getCargo() == null) {
+        if (nuevoEmpleado.getCargo() == null || nuevoEmpleado.getCargo().isEmpty()|| nuevoEmpleado.getCargo().isBlank()) {
             System.err.println("Escribe un cargo entre los siguientes disponibles: ");
-            System.out.println("camarero, cocinero, jefe de cocina, jefe de sala, gerente, limpieza, pinche de cocina.");
+            System.err.println("camarero, cocinero, jefe de cocina, jefe de sala, gerente, limpieza, pinche de cocina.");
             return false;
         }
-        if (nuevoEmpleado.getSalario() == null || nuevoEmpleado.getSalario() <= 0) {
-            System.err.println("El salario no puede ser nulo o 0");
+        //el salario no puede ser null y tampoco menor que cero, si puede ser igual a cero por si están en practicas
+        if (nuevoEmpleado.getSalario() == null || nuevoEmpleado.getSalario() < 0) {
+            System.err.println("El salario no puede ser nulo o menor que 0");
             return false;
         }
-        if (nuevoEmpleado.getFecha_inicio() == null) {
+        //corroboro que la fecha no puede ser null ni inferior a la fecha actual
+
+        //variable fecha actual
+        LocalDateTime now = LocalDateTime.now();
+        if (nuevoEmpleado.getFecha_inicio() == null|| nuevoEmpleado.getFecha_inicio().isAfter(now)) {
             System.err.println("La fecha de inicio debe ser valida y tiene la siguiente estructura: 2024,12,20,0,0,0");
             return false;
         }
         return true;
     }
+
     //lista de empleados
     ArrayList<Empleado> empleados = new ArrayList<>();
 
@@ -57,4 +64,32 @@ public class EmpleadoJPA {
             System.err.println("Estos datos no son correctos para crear un empleado");
         }
     }
+    //para encontrar un empleado por id y poder eliminarlo
+    public Empleado find(Integer idSearch) {
+        EntityManager em = ConfigJPA.getEntityManager();
+        try{
+            return em.find(Empleado.class, idSearch);
+        }finally {
+            em.close();
+        }
+    }
+    //eliminar un empleado
+    public void delete(Integer idDelete) {
+        EntityManager em = ConfigJPA.getEntityManager();
+        try{
+            em.getTransaction().begin();
+            Empleado empleado = em.find(Empleado.class, idDelete);
+            if (empleado != null){
+                em.remove(empleado);
+            }else{
+                System.err.println("El id " + idDelete + " no existe.");
+            }
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+
+
+
 }
