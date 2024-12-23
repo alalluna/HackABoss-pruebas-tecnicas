@@ -9,28 +9,28 @@ public class EmpleadoController {
 
     EmpleadoJPA empleadoJPA = new EmpleadoJPA();
 
-    public void create(Empleado nuevoEmpleado){
-        empleadoJPA.create(nuevoEmpleado);
+    public void createEmployee(Empleado nuevoEmpleado){
+        empleadoJPA.createEmployee(nuevoEmpleado);
     }
 
-    public Empleado find(Integer idSearch){
-        return empleadoJPA.find(idSearch);
+    public Empleado findById(Integer idSearch){
+        return empleadoJPA.findById(idSearch);
     }
 
-    public void delete(Integer idDelete){
-        empleadoJPA.delete(idDelete);
+    public void deleteEmployee(Integer idDelete){
+        empleadoJPA.deleteEmployee(idDelete);
     }
 
-    public List<Empleado> read(){
-        return empleadoJPA.read();
+    public List<Empleado> readEmployees(){
+        return empleadoJPA.readEmployees();
     }
 
-    public void update(Empleado editarEmpleado){
-        empleadoJPA.update(editarEmpleado);
+    public void updateEmployee(Empleado editarEmpleado){
+        empleadoJPA.updateEmployee(editarEmpleado);
     }
 
-    public List<Empleado> searchByCargo (String cargo){
-        return empleadoJPA.searchByCargo(cargo);
+    public List<Empleado> searchByPosition(String cargo){
+        return empleadoJPA.searchByPosition(cargo);
     }
 
 }

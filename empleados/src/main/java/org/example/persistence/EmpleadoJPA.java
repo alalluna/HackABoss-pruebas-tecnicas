@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 //aquí desarrollo los metodos
+//He renombrado los métodos para que describan mejor su funcion
 public class EmpleadoJPA {
 
     //para validar los datos del empleado es bueno confirmar que no se envian datos incorrectos
     // para los string valido que los datos no esten vacios, blanco o null
-    private boolean validarEmpleado(Empleado nuevoEmpleado) {
+    private boolean validateEmployee(Empleado nuevoEmpleado) {
         if (nuevoEmpleado.getNombre() == null || nuevoEmpleado.getNombre().isBlank() || nuevoEmpleado.getNombre().isEmpty()) {
             System.err.println("Escribe un nombre valido, no se aceptan en blanco o null");
             return false;
@@ -47,8 +48,8 @@ public class EmpleadoJPA {
     ArrayList<Empleado> empleados = new ArrayList<>();
 
     //crear un empleado (if else para validar, try finally para guardar en la bbdd)
-    public void create(Empleado nuevoEmpleado){
-        if(validarEmpleado(nuevoEmpleado)){
+    public void createEmployee(Empleado nuevoEmpleado){
+        if(validateEmployee(nuevoEmpleado)){
             EntityManager em = ConfigJPA.getEntityManager();
             try{
                 // guardar en la bbdd
@@ -65,7 +66,7 @@ public class EmpleadoJPA {
         }
     }
     //para encontrar un empleado por id y poder eliminarlo
-    public Empleado find(Integer idSearch) {
+    public Empleado findById(Integer idSearch) {
         EntityManager em = ConfigJPA.getEntityManager();
         try{
             return em.find(Empleado.class, idSearch);
@@ -74,7 +75,7 @@ public class EmpleadoJPA {
         }
     }
     //eliminar un empleado
-    public void delete(Integer idDelete) {
+    public void deleteEmployee(Integer idDelete) {
         EntityManager em = ConfigJPA.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -91,7 +92,7 @@ public class EmpleadoJPA {
     }
 
     //leer la lista de Empleados
-    public List<Empleado> read() {
+    public List<Empleado> readEmployees() {
         EntityManager em = ConfigJPA.getEntityManager();
         try {
             //se usa query para la consulta sql y se devuelve la lista de empleados
@@ -103,8 +104,8 @@ public class EmpleadoJPA {
     }
 
     //editar un registro, es similar a crear pero usando merge
-    public void update(Empleado editarEmpleado) {
-        if(validarEmpleado(editarEmpleado)){
+    public void updateEmployee(Empleado editarEmpleado) {
+        if(validateEmployee(editarEmpleado)){
             EntityManager em = ConfigJPA.getEntityManager();
             try{
                 em.getTransaction().begin();
@@ -121,7 +122,7 @@ public class EmpleadoJPA {
     }
 
     //buscar por cargo
-    public List<Empleado> searchByCargo(String cargo) {
+    public List<Empleado> searchByPosition(String cargo) {
         EntityManager em = ConfigJPA.getEntityManager();
         //En este caso es similar a read pero se debe hacer la consulta por el string cargo
         try {
